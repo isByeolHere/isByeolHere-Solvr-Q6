@@ -63,13 +63,21 @@ const SleepListPage: React.FC = () => {
     <div className="container mx-auto p-4 max-w-lg">
       <h1 className="text-2xl font-bold mb-6 text-center">수면 기록</h1>
 
-      <div className="flex justify-center mb-6">
-        <Link
-          to="/sleep/stats"
-          className="bg-blue-500 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-blue-600 mr-4"
-        >
-          통계 보기
-        </Link>
+      <div className="flex flex-col items-center mb-6">
+        <div className="flex justify-center mb-4">
+          <Link
+            to="/sleep/stats"
+            className="bg-blue-500 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-blue-600 mr-4"
+          >
+            통계 보기
+          </Link>
+          <Link
+            to="/sleep/advice"
+            className="bg-green-500 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-green-600"
+          >
+            AI 수면 조언 받기
+          </Link>
+        </div>
         <Link
           to="/sleep/new"
           className="bg-carrot-orange text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-orange-700"

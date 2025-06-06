@@ -150,3 +150,18 @@ export const getMonthlySleepAverages = async (
   const data = await response.json()
   return data
 }
+
+// 특정 사용자의 수면 기록 기반 AI 조언 조회
+export const getSleepAdvice = async (userId: string): Promise<string> => {
+  const response = await fetch(`${API_URL}/sleep-records/advice/${userId}`, {
+    credentials: 'same-origin'
+  })
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+
+  const data = await response.json()
+  // 서버에서 { advice: string } 형태로 반환하므로 advice 필드만 추출하여 반환
+  return data.advice
+}

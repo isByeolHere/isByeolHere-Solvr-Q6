@@ -11,6 +11,7 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts'
+import { Link } from 'react-router-dom'
 
 const SleepStatsPage: React.FC = () => {
   const [recentRecords, setRecentRecords] = useState<SleepRecord[]>([])

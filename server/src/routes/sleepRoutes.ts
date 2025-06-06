@@ -102,4 +102,16 @@ export default async function sleepRoutes(fastify: FastifyInstance) {
       reply.code(500).send({ error: '월간 평균 수면 통계를 가져오는데 실패했습니다.' })
     }
   })
+
+  // 특정 사용자의 수면 기록 기반 AI 조언 조회 라우트
+  fastify.get('/sleep-records/advice/:userId', async (request, reply) => {
+    try {
+      const { userId } = request.params as { userId: string }
+      const advice = await sleepService.getSleepAdvice(userId)
+      return { advice }
+    } catch (error) {
+      fastify.log.error(error)
+      reply.code(500).send({ error: 'AI 수면 조언을 가져오는데 실패했습니다.' })
+    }
+  })
 }
