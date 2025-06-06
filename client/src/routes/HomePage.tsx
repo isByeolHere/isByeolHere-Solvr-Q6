@@ -3,15 +3,17 @@ import { Link } from 'react-router-dom'
 const HomePage = () => {
   return (
     <div className="text-center">
-      <h1 className="text-4xl font-bold text-neutral-900 mb-6">풀스택 보일러플레이트</h1>
+      <h1 className="text-4xl font-bold text-neutral-900 mb-6">
+        당근과 함께 당신의 수면을 기록하세요.
+      </h1>
       <p className="text-xl text-neutral-600 mb-8">
         React, Vite, TailwindCSS, Fastify, SQLite를 활용한 풀스택 웹 애플리케이션
         보일러플레이트입니다.
       </p>
       <div className="flex justify-center space-x-4">
-        <Link to="/users" className="btn btn-primary">
+        {/* <Link to="/users" className="btn btn-primary">
           유저 관리 시작하기
-        </Link>
+        </Link> */}
         <a
           href="https://github.com/yourusername/fullstack-boilerplate"
           target="_blank"

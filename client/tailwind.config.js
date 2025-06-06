@@ -4,6 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        'carrot-orange': '#FF6F0F',
+        'sleep-score': '#049B58',
         primary: {
           50: '#f0f9ff',
           100: '#e0f2fe',

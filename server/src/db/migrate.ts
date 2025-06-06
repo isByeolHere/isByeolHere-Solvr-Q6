@@ -1,23 +1,12 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3'
-import Database from 'better-sqlite3'
-import { mkdir } from 'fs/promises'
-import { dirname } from 'path'
-import env from '../config/env'
+import { drizzle } from 'drizzle-orm/pg-core'
+import { migrate } from 'drizzle-orm/pg-core/migrator'
+import { Pool } from 'pg'
+import * as dotenv from 'dotenv'
+import path from 'path'
 import { users } from './schema'
 import { UserRole } from '../types'
 
-// 데이터베이스 디렉토리 생성 함수
-async function ensureDatabaseDirectory() {
-  const dir = dirname(env.DATABASE_URL)
-  try {
-    await mkdir(dir, { recursive: true })
-  } catch (error) {
-    // 디렉토리가 이미 존재하는 경우 무시
-    if ((error as NodeJS.ErrnoException).code !== 'EEXIST') {
-      throw error
-    }
-  }
-}
+dotenv.config()
 
 // 초기 사용자 데이터
 const initialUsers = [
@@ -44,57 +33,28 @@ const initialUsers = [
   }
 ]
 
-// 데이터베이스 마이그레이션 및 초기 데이터 삽입
-async function runMigration() {
-  try {
-    // 데이터베이스 디렉토리 생성
-    await ensureDatabaseDirectory()
+const runMigration = async () => {
+  const pool = new Pool({
+    connectionString: process.env.DATABASE_URL
+  })
 
-    // 데이터베이스 연결
-    const sqlite = new Database(env.DATABASE_URL)
-    const db = drizzle(sqlite)
+  const db = drizzle(pool)
 
-    // 스키마 생성
-    console.log('데이터베이스 스키마 생성 중...')
+  console.log('Running migrations...')
 
-    // users 테이블 생성
-    sqlite.exec(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE,
-        role TEXT NOT NULL DEFAULT 'USER',
-        created_at TEXT NOT NULL,
-        updated_at TEXT NOT NULL
-      )
-    `)
+  await migrate(db, {
+    migrationsFolder: path.join(__dirname, '../../drizzle')
+  })
 
-    // 초기 데이터 삽입
-    console.log('초기 데이터 삽입 중...')
+  console.log('Migrations completed!')
 
-    // 기존 데이터 확인
-    const existingUsers = db.select().from(users)
-
-    if ((await existingUsers).length === 0) {
-      // 초기 사용자 데이터 삽입
-      for (const user of initialUsers) {
-        await db.insert(users).values(user)
-      }
-      console.log(`${initialUsers.length}명의 사용자가 추가되었습니다.`)
-    } else {
-      console.log('사용자 데이터가 이미 존재합니다. 초기 데이터 삽입을 건너뜁니다.')
-    }
-
-    console.log('데이터베이스 마이그레이션이 완료되었습니다.')
-  } catch (error) {
-    console.error('데이터베이스 마이그레이션 중 오류가 발생했습니다:', error)
-    process.exit(1)
-  }
+  await pool.end()
 }
 
-// 스크립트가 직접 실행된 경우에만 마이그레이션 실행
-if (require.main === module) {
-  runMigration()
-}
+runMigration().catch(err => {
+  console.error('Migration failed!')
+  console.error(err)
+  process.exit(1)
+})
 
 export default runMigration
