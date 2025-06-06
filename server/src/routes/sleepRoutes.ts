@@ -70,4 +70,36 @@ export default async function sleepRoutes(fastify: FastifyInstance) {
       reply.code(500).send({ error: '수면 기록 삭제에 실패했습니다.' })
     }
   })
+
+  // 특정 사용자의 최근 N개 수면 기록 조회 라우트
+  fastify.get('/sleep-records/stats/recent/:userId', async (request, reply) => {
+    try {
+      const { userId } = request.params as { userId: string }
+      const { limit } = request.query as { limit?: number }
+      const recordLimit = limit ? Number(limit) : 7 // 기본값 7개
+
+      const records = await sleepService.getRecentRecords(userId, recordLimit)
+      return records
+    } catch (error) {
+      fastify.log.error(error)
+      reply.code(500).send({ error: '최근 수면 기록을 가져오는데 실패했습니다.' })
+    }
+  })
+
+  // 특정 사용자의 최근 1개월 평균 수면 통계 조회 라우트
+  fastify.get('/sleep-records/stats/monthly/:userId', async (request, reply) => {
+    try {
+      const { userId } = request.params as { userId: string }
+      const averages = await sleepService.getMonthlyAverages(userId)
+
+      if (!averages) {
+        return reply.code(404).send({ error: '최근 1개월간의 수면 기록이 없습니다.' })
+      }
+
+      return averages
+    } catch (error) {
+      fastify.log.error(error)
+      reply.code(500).send({ error: '월간 평균 수면 통계를 가져오는데 실패했습니다.' })
+    }
+  })
 }

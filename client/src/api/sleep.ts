@@ -112,3 +112,41 @@ export interface CreateSleepRecordInput {
 }
 
 export type UpdateSleepRecordInput = Partial<Omit<SleepRecord, 'id' | 'createdAt' | 'updatedAt'>>
+
+// 특정 사용자의 최근 수면 기록 통계 조회
+export const getRecentSleepStats = async (
+  userId: string,
+  limit: number = 7
+): Promise<SleepRecord[]> => {
+  const response = await fetch(`${API_URL}/sleep-records/stats/recent/${userId}?limit=${limit}`, {
+    credentials: 'same-origin'
+  })
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+
+  const data: any[] = await response.json()
+  return data.map(record => ({
+    ...record,
+    createdAt: new Date(record.created_at),
+    updatedAt: new Date(record.updated_at),
+    date: record.date
+  }))
+}
+
+// 특정 사용자의 최근 1개월 평균 수면 통계 조회
+export const getMonthlySleepAverages = async (
+  userId: string
+): Promise<{ avgSleepHours: number; avgSleepScore: number }> => {
+  const response = await fetch(`${API_URL}/sleep-records/stats/monthly/${userId}`, {
+    credentials: 'same-origin'
+  })
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`)
+  }
+
+  const data = await response.json()
+  return data
+}

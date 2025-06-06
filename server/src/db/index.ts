@@ -42,6 +42,7 @@ export const initializeDatabase = async () => {
 export const query = {
   all: (sql: string, params: any[] = []) => {
     const stmt = db.prepare(sql)
+    stmt.bind(params)
     const results = []
     while (stmt.step()) {
       results.push(stmt.getAsObject())

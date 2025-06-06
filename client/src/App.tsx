@@ -4,6 +4,7 @@ import MainLayout from './layouts/MainLayout'
 import SleepListPage from './routes/SleepListPage'
 import SleepRecordForm from './routes/SleepRecordForm'
 import NotFoundPage from './routes/NotFoundPage'
+import SleepStatsPage from './routes/SleepStatsPage'
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
         {/* <Route path="/users" element={<UserManagementPage />} /> */}
         {/* 수면 기록 목록 라우트 */}
         <Route path="/sleep" element={<SleepListPage />} />
+        {/* 수면 통계 라우트 추가 */}
+        <Route path="/sleep/stats" element={<SleepStatsPage />} />
         {/* NotFound 페이지도 MainLayout 안에 포함 */}
         <Route path="*" element={<NotFoundPage />} />
       </Route>

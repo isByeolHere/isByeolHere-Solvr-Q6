@@ -63,6 +63,21 @@ const SleepListPage: React.FC = () => {
     <div className="container mx-auto p-4 max-w-lg">
       <h1 className="text-2xl font-bold mb-6 text-center">수면 기록</h1>
 
+      <div className="flex justify-center mb-6">
+        <Link
+          to="/sleep/stats"
+          className="bg-blue-500 text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-blue-600 mr-4"
+        >
+          통계 보기
+        </Link>
+        <Link
+          to="/sleep/new"
+          className="bg-carrot-orange text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-orange-700"
+        >
+          새 기록 추가
+        </Link>
+      </div>
+
       {records.length === 0 ? (
         <p className="text-center text-gray-600">기록된 수면 기록이 없습니다.</p>
       ) : (
@@ -114,15 +129,6 @@ const SleepListPage: React.FC = () => {
           ))}
         </ul>
       )}
-
-      <div className="flex justify-center mt-6">
-        <Link
-          to="/sleep/new"
-          className="bg-carrot-orange text-white px-6 py-3 rounded-md text-lg font-semibold hover:bg-orange-700"
-        >
-          새 기록 추가
-        </Link>
-      </div>
     </div>
   )
 }
