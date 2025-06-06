@@ -101,23 +101,6 @@
 pnpm install
 ```
 
-### 환경 변수 설정
-
-서버 디렉토리 (`server/`)에 `.env` 파일을 생성하고 다음 내용을 추가합니다.
-
-```env
-PORT=3000
-HOST=0.0.0.0
-NODE_ENV=development
-# 데이터베이스 URL (SQLite 사용 시)
-# DATABASE_URL=./data/sleep.db
-# 필요에 따라 CORS ORIGIN 설정
-# CORS_ORIGIN=http://localhost:5173
-LOG_LEVEL=info
-```
-
-클라이언트 디렉토리 (`client/`)에도 필요한 경우 `.env` 파일을 설정할 수 있습니다 (예시는 `client/.env.example` 참조).
-
 ### 개발 서버 실행
 
 ```bash
