@@ -51,6 +51,7 @@ export const query = {
   },
   get: (sql: string, params: any[] = []) => {
     const stmt = db.prepare(sql)
+    stmt.bind(params)
     const result = stmt.step() ? stmt.getAsObject() : null
     stmt.free()
     return result

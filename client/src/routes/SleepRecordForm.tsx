@@ -62,11 +62,13 @@ const SleepRecordForm: React.FC = () => {
     try {
       if (id) {
         const updateData: UpdateSleepRecordInput = {
+          userId: 'user1',
+          date: formData.date,
           sleepHours: formData.sleepHours,
           mood: formData.mood,
           sleepScore: formData.sleepScore
         }
-        await updateSleepRecord(id, updateData)
+        await updateSleepRecord(id, updateData as Partial<CreateSleepRecordInput>)
         alert('기록이 성공적으로 수정되었습니다.')
       } else {
         await createSleepRecord({

@@ -13,8 +13,7 @@ const SleepListPage: React.FC = () => {
   const fetchRecords = async () => {
     try {
       setLoading(true)
-      const userId = 'user1'
-      const data = await getSleepRecords(userId)
+      const data = await getSleepRecords()
       setRecords(data)
       setError(null)
     } catch (err) {

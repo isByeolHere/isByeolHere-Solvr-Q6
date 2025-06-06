@@ -102,3 +102,13 @@ export const getSleepRecordById = async (id: string): Promise<SleepRecord> => {
     date: record.date
   }
 }
+
+export interface CreateSleepRecordInput {
+  userId: string
+  date: string
+  sleepHours: number
+  mood: string
+  sleepScore: number
+}
+
+export type UpdateSleepRecordInput = Partial<Omit<SleepRecord, 'id' | 'createdAt' | 'updatedAt'>>
