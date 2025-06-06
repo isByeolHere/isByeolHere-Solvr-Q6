@@ -5,7 +5,7 @@ dotenv.config()
 export default {
   schema: './src/db/schema.ts',
   out: './drizzle',
-  dialect: 'postgresql',
+  dialect: 'sqlite',
   dbCredentials: {
     connectionString: process.env.DATABASE_URL || ''
   }

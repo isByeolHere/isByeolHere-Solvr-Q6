@@ -2,9 +2,9 @@ import { SleepRecord, CreateSleepRecordInput, UpdateSleepRecordInput } from '../
 
 const API_URL = 'http://localhost:3000/api'
 
-export const getSleepRecords = async (userId: string): Promise<SleepRecord[]> => {
-  const response = await fetch(`${API_URL}/sleep-records?userId=${userId}`, {
-    credentials: 'include'
+export const getSleepRecords = async (): Promise<SleepRecord[]> => {
+  const response = await fetch(`${API_URL}/sleep-records`, {
+    credentials: 'same-origin'
   })
 
   if (!response.ok) {
@@ -26,7 +26,7 @@ export const createSleepRecord = async (data: CreateSleepRecordInput): Promise<S
     headers: {
       'Content-Type': 'application/json'
     },
-    credentials: 'include',
+    credentials: 'same-origin',
     body: JSON.stringify(data)
   })
 
@@ -52,7 +52,7 @@ export const updateSleepRecord = async (
     headers: {
       'Content-Type': 'application/json'
     },
-    credentials: 'include',
+    credentials: 'same-origin',
     body: JSON.stringify(data)
   })
 
@@ -72,7 +72,7 @@ export const updateSleepRecord = async (
 export const deleteSleepRecord = async (id: string): Promise<void> => {
   const response = await fetch(`${API_URL}/sleep-records/${id}`, {
     method: 'DELETE',
-    credentials: 'include'
+    credentials: 'same-origin'
   })
 
   if (!response.ok) {
@@ -82,7 +82,7 @@ export const deleteSleepRecord = async (id: string): Promise<void> => {
 
 export const getSleepRecordById = async (id: string): Promise<SleepRecord> => {
   const response = await fetch(`${API_URL}/sleep-records/${id}`, {
-    credentials: 'include'
+    credentials: 'same-origin'
   })
 
   if (!response.ok) {

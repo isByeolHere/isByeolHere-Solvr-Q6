@@ -1,6 +1,6 @@
-import { drizzle } from 'drizzle-orm/pg-core'
-import { migrate } from 'drizzle-orm/pg-core/migrator'
-import { Pool } from 'pg'
+import { drizzle } from 'drizzle-orm/better-sqlite3'
+import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
+import Database from 'better-sqlite3'
 import * as dotenv from 'dotenv'
 import path from 'path'
 import { users } from './schema'
@@ -34,21 +34,23 @@ const initialUsers = [
 ]
 
 const runMigration = async () => {
-  const pool = new Pool({
-    connectionString: process.env.DATABASE_URL
-  })
+  // SQLite 데이터베이스 연결
+  const sqlite = new Database(process.env.DATABASE_URL || './data/sleep.db')
 
-  const db = drizzle(pool)
+  // Drizzle 초기화
+  const db = drizzle(sqlite)
 
   console.log('Running migrations...')
 
+  // 마이그레이션 실행
   await migrate(db, {
     migrationsFolder: path.join(__dirname, '../../drizzle')
   })
 
   console.log('Migrations completed!')
 
-  await pool.end()
+  // 데이터베이스 연결 닫기
+  sqlite.close()
 }
 
 runMigration().catch(err => {
